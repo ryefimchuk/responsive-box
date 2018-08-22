@@ -3,11 +3,11 @@ interface InnerListener {
   (event: UIEvent): void;
 }
 
-function throttle(func: InnerListener, limit: number): InnerListener {
+function throttle(listener: InnerListener, limit: number): InnerListener {
 
-  if (!limit) {
+  if (!limit || limit < 0) {
 
-    return func;
+    return listener;
   }
 
   let lastTimeoutId: number;
@@ -19,7 +19,7 @@ function throttle(func: InnerListener, limit: number): InnerListener {
 
     if (!lastInvocationTimestamp) {
 
-      func.call(context, event);
+      listener.call(context, event);
       lastInvocationTimestamp = Date.now();
     } else {
 
@@ -29,7 +29,7 @@ function throttle(func: InnerListener, limit: number): InnerListener {
 
         if ((Date.now() - lastInvocationTimestamp) >= limit) {
 
-          func.call(context, event);
+          listener.call(context, event);
           lastInvocationTimestamp = Date.now();
         }
       }, limit - (Date.now() - lastInvocationTimestamp));
