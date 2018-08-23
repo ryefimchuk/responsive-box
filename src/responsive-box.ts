@@ -1,3 +1,6 @@
+import {MediaQueryListNode} from './media-queries/compiler/parser/media-query-list-node';
+import {Compiler} from './media-queries/compiler/compiler';
+
 interface InnerListener {
 
   (event: UIEvent): void;
@@ -70,4 +73,25 @@ export function watchResizing(element: HTMLElement, listener: (width: number, he
 
     window.removeEventListener('resize', innerListener);
   };
+}
+
+export function bindClass(element: HTMLElement, className: string, mediaQuery: string): Function {
+
+  let mediaQueryListNode: MediaQueryListNode;
+
+  return watchResizing(element, (width: number, height: number): void => {
+
+    if (!mediaQueryListNode) {
+
+      mediaQueryListNode = new Compiler(mediaQuery).compile();
+    }
+
+    if (mediaQueryListNode.eval(width, height)) {
+
+      element.classList.add(className);
+    } else {
+
+      element.classList.remove(className);
+    }
+  });
 }
