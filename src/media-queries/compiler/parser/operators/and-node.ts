@@ -11,6 +11,6 @@ export class AndNode implements Node {
   }
 
   public toSource(): string {
-    return `${this._leftExpression.toJS()} and ${this._rightExpression.toJS()}`;
+    return `${this._leftExpression.toSource()} and ${this._rightExpression.toSource()}`;
   }
 }
