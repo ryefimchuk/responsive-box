@@ -1,19 +1,21 @@
-import {TokenStream} from './lexer/token-stream';
-import {InvalidToken, Token} from './lexer/token';
-import {TokenType} from './lexer/enum';
-import {LexerError} from './lexer/lexer-error';
-import {SavedState} from './lexer/interface';
-import {ParserError} from './parser/parser-error';
-import {MediaQueryListNode} from './parser/media-query-list-node';
-import {Node} from './parser/interface';
-import {AndNode} from './parser/operators/and-node';
-import {NotNode} from './parser/operators/not-node';
-import {WidthNode} from './parser/features/width-node';
-import {MaxWidthNode} from './parser/features/max-width-node';
-import {MinWidthNode} from './parser/features/min-width-node';
-import {HeightNode} from './parser/features/height-node';
-import {MinHeightNode} from './parser/features/min-height-node';
-import {MaxHeightNode} from './parser/features/max-height-node';
+import { TokenStream } from './lexer/token-stream';
+import { InvalidToken, Token } from './lexer/token';
+import { TokenType } from './lexer/enum';
+import { LexerError } from './lexer/lexer-error';
+import { SavedState } from './lexer/interface';
+import { ParserError } from './parser/parser-error';
+import { MediaQueryListNode } from './parser/media-query-list-node';
+import { Node } from './parser/interface';
+import { AndNode } from './parser/operators/and-node';
+import { NotNode } from './parser/operators/not-node';
+import { WidthNode } from './parser/features/width-node';
+import { MaxWidthNode } from './parser/features/max-width-node';
+import { MinWidthNode } from './parser/features/min-width-node';
+import { HeightNode } from './parser/features/height-node';
+import { MinHeightNode } from './parser/features/min-height-node';
+import { MaxHeightNode } from './parser/features/max-height-node';
+
+const MEDIA_FEATURES: string[] = ['width', 'min-width', 'max-width', 'height', 'min-height', 'max-height'];
 
 export class Compiler {
 
@@ -34,9 +36,14 @@ export class Compiler {
     while (true) {
 
       const nextMediaQueryNode = this._mediaQueryNode();
-      if (!mediaQueryNodes && mediaQueryNodes.length !== 0) {
+      if (!nextMediaQueryNode) {
 
-        throw this._syntaxError(`Media query expression is expected.`);
+        if (mediaQueryNodes.length !== 0) {
+
+          throw this._syntaxError(`Media query expression is expected.`);
+        }
+
+        break;
       }
 
       mediaQueryNodes.push(nextMediaQueryNode);
@@ -117,6 +124,13 @@ export class Compiler {
         throw this._syntaxError(`Identifier expected.`);
       }
 
+      if (MEDIA_FEATURES.indexOf(
+        identifierToken.getValue()
+      ) === -1) {
+
+        throw this._syntaxError(`Unknown media feature: ${identifierToken.getValue()}`);
+      }
+
       this._expect(TokenType.COLON);
 
       if (!this._hasMoreTokens()) {
@@ -124,47 +138,55 @@ export class Compiler {
         throw this._syntaxError(`Invalid expression.`);
       }
 
-      const expressionToken: Token = this._readToken();
-
       switch (identifierToken.getValue()) {
         case 'width': {
           result = new WidthNode(
-            this._asNumber(expressionToken)
+            this._asNumber(
+              this._readToken()
+            )
           );
           break;
         }
         case 'min-width': {
           result = new MinWidthNode(
-            this._asNumber(expressionToken)
+            this._asNumber(
+              this._readToken()
+            )
           );
           break;
         }
         case 'max-width': {
           result = new MaxWidthNode(
-            this._asNumber(expressionToken)
+            this._asNumber(
+              this._readToken()
+            )
           );
           break;
         }
         case 'height': {
           result = new HeightNode(
-            this._asNumber(expressionToken)
+            this._asNumber(
+              this._readToken()
+            )
           );
           break;
         }
         case 'min-height': {
           result = new MinHeightNode(
-            this._asNumber(expressionToken)
+            this._asNumber(
+              this._readToken()
+            )
           );
           break;
         }
         case 'max-height': {
           result = new MaxHeightNode(
-            this._asNumber(expressionToken)
+            this._asNumber(
+              this._readToken()
+            )
           );
           break;
         }
-        default:
-          throw this._syntaxError(`Unknown media feature: ${identifierToken.getValue()}`);
       }
 
       this._expect(TokenType.R_PAREN);
@@ -219,7 +241,12 @@ export class Compiler {
 
     if (!this._accept(tokenType)) {
 
-      throw this._syntaxError(`Expected token ${tokenType}`);
+      if (this._hasMoreTokens()) {
+
+        throw this._syntaxError(`Expected token ${TokenType[tokenType]}, but ${TokenType[this._readToken().getTokenType()]} found.`);
+      }
+
+      throw this._syntaxError(`Expected token ${TokenType[tokenType]}, but EOF found.`);
     }
   }
 

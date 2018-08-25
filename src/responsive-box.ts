@@ -1,5 +1,5 @@
-import {MediaQueryListNode} from './media-queries/compiler/parser/media-query-list-node';
-import {Compiler} from './media-queries/compiler/compiler';
+import { MediaQueryListNode } from './media-queries/compiler/parser/media-query-list-node';
+import { Compiler } from './media-queries/compiler/compiler';
 
 interface InnerListener {
 
@@ -16,7 +16,7 @@ function throttle(listener: InnerListener, limit: number): InnerListener {
   let lastTimeoutId: number;
   let lastInvocationTimestamp: number;
 
-  return function (this: Window, event: UIEvent): void {
+  return function(this: Window, event: UIEvent): void {
 
     const context: Window = this;
 

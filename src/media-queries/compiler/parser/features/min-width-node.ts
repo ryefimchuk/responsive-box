@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class MinWidthNode implements Node {
 
@@ -6,7 +6,7 @@ export class MinWidthNode implements Node {
   }
 
   public toJS(): string {
-    return `width >= ctx.calc(${this._minWidth}, 'px')`;
+    return `width >= ${this._minWidth}`;
   }
 
   public toSource(): string {

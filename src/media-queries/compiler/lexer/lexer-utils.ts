@@ -1,5 +1,8 @@
 export class LexerUtils {
 
+  private constructor() {
+  }
+
   public static getVisualState(input: string, position: number): string {
 
     if (position < 0 || position >= input.length) {
@@ -50,8 +53,5 @@ export class LexerUtils {
     result += pointerResult;
 
     return result;
-  }
-
-  private constructor() {
   }
 }

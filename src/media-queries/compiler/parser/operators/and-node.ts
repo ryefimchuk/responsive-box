@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class AndNode implements Node {
 
@@ -7,7 +7,7 @@ export class AndNode implements Node {
   }
 
   public toJS(): string {
-    return `${this._leftExpression.toJS()} && ${this._rightExpression.toJS()}`;
+    return `(${this._leftExpression.toJS()} && ${this._rightExpression.toJS()})`;
   }
 
   public toSource(): string {

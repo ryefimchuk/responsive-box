@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class MaxHeightNode implements Node {
 
@@ -6,7 +6,7 @@ export class MaxHeightNode implements Node {
   }
 
   public toJS(): string {
-    return `height <= ctx.calc(${this._maxHeight}, 'px')`;
+    return `height <= ${this._maxHeight}`;
   }
 
   public toSource(): string {

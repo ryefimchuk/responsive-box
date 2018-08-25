@@ -1,4 +1,4 @@
-import {CharStream} from './char-stream';
+import { CharStream } from './char-stream';
 
 export class CodeLocation {
 

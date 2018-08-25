@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class WidthNode implements Node {
 
@@ -6,7 +6,7 @@ export class WidthNode implements Node {
   }
 
   public toJS(): string {
-    return `width === ctx.calc(${this._width}, 'px')`;
+    return `width === ${this._width}`;
   }
 
   public toSource(): string {

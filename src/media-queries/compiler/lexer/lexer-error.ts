@@ -1,4 +1,4 @@
-import {CodeLocation} from './code-location';
+import { CodeLocation } from './code-location';
 
 export class LexerError extends Error {
 

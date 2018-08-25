@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class NotNode implements Node {
 
@@ -6,10 +6,10 @@ export class NotNode implements Node {
   }
 
   public toJS(): string {
-    return `!(${this._expression})`;
+    return `!(${this._expression.toJS()})`;
   }
 
   public toSource(): string {
-    return `not ${this._expression}`;
+    return `not ${this._expression.toSource()}`;
   }
 }

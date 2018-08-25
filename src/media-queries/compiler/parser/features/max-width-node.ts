@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class MaxWidthNode implements Node {
 
@@ -6,7 +6,7 @@ export class MaxWidthNode implements Node {
   }
 
   public toJS(): string {
-    return `width <= ctx.calc(${this._maxWidth}, 'px')`;
+    return `width <= ${this._maxWidth}`;
   }
 
   public toSource(): string {

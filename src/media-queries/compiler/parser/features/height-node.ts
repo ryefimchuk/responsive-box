@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class HeightNode implements Node {
 
@@ -6,7 +6,7 @@ export class HeightNode implements Node {
   }
 
   public toJS(): string {
-    return `height === ctx.calc(${this._height}, 'px')`;
+    return `height === ${this._height}`;
   }
 
   public toSource(): string {

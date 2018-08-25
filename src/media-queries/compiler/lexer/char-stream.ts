@@ -1,6 +1,6 @@
-import {SavedState} from './interface';
-import {LexerUtils} from './lexer-utils';
-import {CodeLocation} from './code-location';
+import { SavedState } from './interface';
+import { LexerUtils } from './lexer-utils';
+import { CodeLocation } from './code-location';
 
 export class CharStream {
 

@@ -1,7 +1,7 @@
-import {Token} from './token';
-import {Lexer} from './lexer';
-import {TokenType} from './enum';
-import {SavedState} from './interface';
+import { Token } from './token';
+import { Lexer } from './lexer';
+import { TokenType } from './enum';
+import { SavedState } from './interface';
 
 export class TokenStream {
 

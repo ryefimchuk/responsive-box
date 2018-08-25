@@ -1,4 +1,4 @@
-import {Node} from '../interface';
+import { Node } from '../interface';
 
 export class MinHeightNode implements Node {
 
@@ -6,7 +6,7 @@ export class MinHeightNode implements Node {
   }
 
   public toJS(): string {
-    return `height >= ctx.calc(${this._minHeight}, 'px')`;
+    return `height >= ${this._minHeight}`;
   }
 
   public toSource(): string {

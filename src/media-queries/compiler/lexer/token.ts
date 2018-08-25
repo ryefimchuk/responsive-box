@@ -1,16 +1,5 @@
-import {CodeLocation} from './code-location';
-import {TokenType} from './enum';
-
-function getTokenTypeName(tokenType: TokenType): string {
-
-  for (let name in TokenType) {
-
-    if (TokenType[name] === tokenType) {
-
-      return name;
-    }
-  }
-}
+import { CodeLocation } from './code-location';
+import { TokenType } from './enum';
 
 export class Token {
 
@@ -53,7 +42,7 @@ export class Token {
   }
 
   public toString(): string {
-    return `'${this.getSourceValue()}': ${getTokenTypeName(this._tokenType)}, StartCodeLocation: [${this._startCodeLocation}], EndCodeLocation: [${this._endCodeLocation}]`;
+    return `'${this.getSourceValue()}': ${TokenType[this._tokenType]}, StartCodeLocation: [${this._startCodeLocation}], EndCodeLocation: [${this._endCodeLocation}]`;
   }
 }
 

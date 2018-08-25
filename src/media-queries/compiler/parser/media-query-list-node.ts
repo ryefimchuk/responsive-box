@@ -1,14 +1,13 @@
-import {Node} from './interface';
+import { Node } from './interface';
 
 interface CompiledMediaQueryList {
 
-  (width: number, height: number, context: any): boolean;
+  (width: number, height: number): boolean;
 }
 
 export class MediaQueryListNode implements Node {
 
   private _function: CompiledMediaQueryList;
-  private _context: any;
 
   constructor(private _mediaQueryNodes: Node[]) {
   }
@@ -29,16 +28,9 @@ export class MediaQueryListNode implements Node {
 
     if (!this._function) {
 
-      this._function = new Function('width', 'height', 'ctx', `return ${this.toJS()};`) as CompiledMediaQueryList;
+      this._function = new Function('width', 'height', `return ${this.toJS()};`) as CompiledMediaQueryList;
     }
 
-    if (!this._context) {
-
-      this._context = {
-        calc: (value: number, dimension: 'px'): number => value
-      };
-    }
-
-    return this._function(width, height, this._context);
+    return this._function(width, height);
   }
 }

@@ -1,10 +1,10 @@
-import {TokenType} from './enum';
-import {InvalidToken, Token, WhiteSpaceToken} from './token';
-import {CharStream} from './char-stream';
-import {CodeLocation} from './code-location';
-import {StringBuilder} from '../../core/string-builder';
-import {SavedState} from './interface';
-import {LexerError} from './lexer-error';
+import { TokenType } from './enum';
+import { InvalidToken, Token, WhiteSpaceToken } from './token';
+import { CharStream } from './char-stream';
+import { CodeLocation } from './code-location';
+import { StringBuilder } from '../../core/string-builder';
+import { SavedState } from './interface';
+import { LexerError } from './lexer-error';
 
 type TokenTypeDictionary = { [key: string]: TokenType };
 
@@ -58,12 +58,12 @@ export class Lexer {
 
       try {
 
-        if (this.readDecimalLiteral(this._stringBuilder, codeLocation)) {
+        if (this._readNumberLiteral(this._stringBuilder, codeLocation)) {
 
           return new Token(this._stringBuilder.toString(), TokenType.NUMBER_LITERAL, codeLocation, this._charStream.getCodeLocation());
         }
 
-        if (this.readWhiteSpace(this._stringBuilder)) {
+        if (this._readWhiteSpace(this._stringBuilder)) {
 
           return new WhiteSpaceToken(this._stringBuilder.toString(), codeLocation, this._charStream.getCodeLocation());
         }
@@ -128,7 +128,7 @@ export class Lexer {
     return this._charStream.getVisualState();
   }
 
-  private readWhiteSpace(sb: StringBuilder): boolean {
+  private _readWhiteSpace(sb: StringBuilder): boolean {
 
     if (this._charStream.hasMoreChars()) {
 
@@ -168,16 +168,16 @@ export class Lexer {
     return false;
   }
 
-  private readDecimalLiteral(sb: StringBuilder, codeLocation: CodeLocation): boolean {
+  private _readNumberLiteral(sb: StringBuilder, codeLocation: CodeLocation): boolean {
 
     if (this._charStream.hasMoreChars()) {
 
       const initialState: SavedState = this._charStream.saveState();
       const builder: StringBuilder = new StringBuilder();
 
-      if (this.appendDecimalNumber(builder) === AppendResult.VALID) {
+      if (this._appendNumber(builder) === AppendResult.VALID) {
 
-        switch (this.appendExponent(builder)) {
+        switch (this._appendExponent(builder)) {
           case AppendResult.VALID: {
             sb.append(builder);
             return true;
@@ -197,7 +197,7 @@ export class Lexer {
 
             builder.append(ch);
 
-            switch (this.appendExponent(builder)) {
+            switch (this._appendExponent(builder)) {
               case AppendResult.VALID: {
                 sb.append(builder);
                 return true;
@@ -208,9 +208,9 @@ export class Lexer {
               }
             }
 
-            if (this.appendDecimalNumber(builder) === AppendResult.VALID) {
+            if (this._appendNumber(builder) === AppendResult.VALID) {
 
-              if (this.appendExponent(builder) === AppendResult.INVALID) {
+              if (this._appendExponent(builder) === AppendResult.INVALID) {
 
                 sb.append(builder);
                 throw new LexerError(`Invalid number literal`, codeLocation, this._charStream.getCodeLocation());
@@ -232,9 +232,9 @@ export class Lexer {
 
         builder.append(ch);
 
-        if (this.appendDecimalNumber(builder) === AppendResult.VALID) {
+        if (this._appendNumber(builder) === AppendResult.VALID) {
 
-          if (this.appendExponent(builder) === AppendResult.INVALID) {
+          if (this._appendExponent(builder) === AppendResult.INVALID) {
 
             sb.append(builder);
             throw new LexerError(`Invalid number literal`, codeLocation, this._charStream.getCodeLocation());
@@ -250,7 +250,7 @@ export class Lexer {
     return false;
   }
 
-  private appendDecimalNumber(sb: StringBuilder): AppendResult {
+  private _appendNumber(sb: StringBuilder): AppendResult {
 
     if (this._charStream.hasMoreChars()) {
 
@@ -291,7 +291,7 @@ export class Lexer {
     return AppendResult.NOPE;
   }
 
-  private appendExponent(sb: StringBuilder): AppendResult {
+  private _appendExponent(sb: StringBuilder): AppendResult {
 
     if (this._charStream.hasMoreChars()) {
 
@@ -316,7 +316,7 @@ export class Lexer {
             savedState.restore();
           }
 
-          if (this.appendDecimalNumber(sb) === AppendResult.VALID) {
+          if (this._appendNumber(sb) === AppendResult.VALID) {
 
             return AppendResult.VALID;
           }
