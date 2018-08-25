@@ -56,6 +56,11 @@ export class Compiler {
       break;
     }
 
+    if (this._hasMoreTokens()) {
+
+      throw this._syntaxError(`Unexpected token: ${this._readToken().getValue()}`);
+    }
+
     return new MediaQueryListNode(mediaQueryNodes);
   }
 
