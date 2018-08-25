@@ -1,15 +1,12 @@
-import { Node } from '../interface';
+import { FeatureNode } from './feature-node';
 
-export class MaxHeightNode implements Node {
+export class MaxHeightNode extends FeatureNode {
 
-  constructor(private _maxHeight: number) {
+  constructor(maxHeight: number) {
+    super('max-height', maxHeight);
   }
 
   public toJS(): string {
-    return `height <= ${this._maxHeight}`;
-  }
-
-  public toSource(): string {
-    return `(max-height: ${this._maxHeight})`;
+    return `height <= ${this.value}`;
   }
 }

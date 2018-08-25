@@ -1,4 +1,4 @@
-import { Node } from './interface';
+import { ASTNode, Node } from './interface';
 
 interface CompiledMediaQueryList {
 
@@ -22,6 +22,14 @@ export class MediaQueryListNode implements Node {
     return this._mediaQueryNodes
       .map((mediaQueryNode: Node): string => mediaQueryNode.toSource())
       .join(', ');
+  }
+
+  public toASTNode(): ASTNode {
+    return {
+      nodeType: 'media_query_list',
+      items: this._mediaQueryNodes
+        .map((mediaQueryNode: Node): ASTNode => mediaQueryNode.toASTNode())
+    };
   }
 
   public eval(width: number, height: number): boolean {

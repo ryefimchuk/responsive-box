@@ -1,15 +1,12 @@
-import { Node } from '../interface';
+import { FeatureNode } from './feature-node';
 
-export class WidthNode implements Node {
+export class WidthNode extends FeatureNode {
 
-  constructor(private _width: number) {
+  constructor(width: number) {
+    super('width', width);
   }
 
   public toJS(): string {
-    return `width === ${this._width}`;
-  }
-
-  public toSource(): string {
-    return `(width: ${this._width})`;
+    return `width === ${this.value}`;
   }
 }

@@ -4,10 +4,14 @@ import { ParserError } from './media-queries/compiler/parser/parser-error';
 
 try {
 
-  const compiler: Compiler = new Compiler(`(max-width: 500) and (max-height: 750), not (min-width: 355)`);
+  const compiler: Compiler = new Compiler(`
+    (min-width: 355) and (max-width: 500) and (min-height: 500), 
+    not (max-width: 100) and (max-height: 500)
+  `);
   const mediaQueryListNode: MediaQueryListNode = compiler.compile();
   console.log(mediaQueryListNode.toJS());
   console.log(mediaQueryListNode.toSource());
+  console.log(JSON.stringify(mediaQueryListNode.toASTNode(), null, 2));
   console.log(mediaQueryListNode.eval(501, 100));
 } catch (e) {
 

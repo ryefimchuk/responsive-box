@@ -1,15 +1,12 @@
-import { Node } from '../interface';
+import { FeatureNode } from './feature-node';
 
-export class MaxWidthNode implements Node {
+export class MaxWidthNode extends FeatureNode {
 
-  constructor(private _maxWidth: number) {
+  constructor(maxWidth: number) {
+    super('max-width', maxWidth);
   }
 
   public toJS(): string {
-    return `width <= ${this._maxWidth}`;
-  }
-
-  public toSource(): string {
-    return `(max-width: ${this._maxWidth})`;
+    return `width <= ${this.value}`;
   }
 }

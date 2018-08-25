@@ -1,15 +1,12 @@
-import { Node } from '../interface';
+import { FeatureNode } from './feature-node';
 
-export class MinHeightNode implements Node {
+export class MinHeightNode extends FeatureNode {
 
-  constructor(private _minHeight: number) {
+  constructor(minHeight: number) {
+    super('min-height', minHeight);
   }
 
   public toJS(): string {
-    return `height >= ${this._minHeight}`;
-  }
-
-  public toSource(): string {
-    return `(min-height: ${this._minHeight})`;
+    return `height >= ${this.value}`;
   }
 }

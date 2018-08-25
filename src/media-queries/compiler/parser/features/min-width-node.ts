@@ -1,15 +1,12 @@
-import { Node } from '../interface';
+import { FeatureNode } from './feature-node';
 
-export class MinWidthNode implements Node {
+export class MinWidthNode extends FeatureNode {
 
-  constructor(private _minWidth: number) {
+  constructor(minWidth: number) {
+    super('min-width', minWidth);
   }
 
   public toJS(): string {
-    return `width >= ${this._minWidth}`;
-  }
-
-  public toSource(): string {
-    return `(min-width: ${this._minWidth})`;
+    return `width >= ${this.value}`;
   }
 }

@@ -26,16 +26,16 @@ export class Compiler {
   }
 
   public compile(): MediaQueryListNode {
-    return this._mediaQueryListNode();
+    return this._mediaQueryList();
   }
 
-  private _mediaQueryListNode(): MediaQueryListNode {
+  private _mediaQueryList(): MediaQueryListNode {
 
     const mediaQueryNodes: Node[] = [];
 
     while (true) {
 
-      const nextMediaQueryNode = this._mediaQueryNode();
+      const nextMediaQueryNode = this._mediaQuery();
       if (!nextMediaQueryNode) {
 
         if (mediaQueryNodes.length !== 0) {
@@ -59,10 +59,10 @@ export class Compiler {
     return new MediaQueryListNode(mediaQueryNodes);
   }
 
-  private _mediaQueryNode(): Node {
+  private _mediaQuery(): Node {
 
     let isInversion: boolean;
-    let expressionNode: Node;
+    let expression: Node;
 
     if (this._accept(TokenType.NOT)) {
 
@@ -71,43 +71,49 @@ export class Compiler {
 
     while (true) {
 
-      const nextExpressionNode = this._expressionNode();
-      if (!nextExpressionNode) {
-
-        break;
-      } else {
-
-        expressionNode = nextExpressionNode;
-      }
-
       if (this._accept(TokenType.AND)) {
 
-        const leftNode: Node = expressionNode;
-        const rightNode: Node = this._expressionNode();
+        if (!expression) {
+
+          throw this._syntaxError(`Left media query expression is expected.`);
+        }
+
+        const leftNode: Node = expression;
+        const rightNode: Node = this._expression();
 
         if (!rightNode) {
 
           throw this._syntaxError(`Right media query expression is expected.`);
         }
 
-        expressionNode = new AndNode(leftNode, rightNode);
+        expression = new AndNode(leftNode, rightNode);
+        continue;
+      }
+
+      const nextExpressionNode = this._expression();
+      if (!nextExpressionNode) {
+
+        break;
+      } else {
+
+        expression = nextExpressionNode;
       }
     }
 
     if (isInversion) {
 
-      if (expressionNode) {
+      if (expression) {
 
-        return new NotNode(expressionNode);
+        return new NotNode(expression);
       }
 
       throw this._syntaxError(`Media query expression is expected.`);
     }
 
-    return expressionNode;
+    return expression;
   }
 
-  private _expressionNode(): Node {
+  private _expression(): Node {
 
     if (this._accept(TokenType.L_PAREN)) {
 

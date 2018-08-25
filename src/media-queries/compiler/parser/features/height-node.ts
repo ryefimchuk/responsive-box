@@ -1,15 +1,12 @@
-import { Node } from '../interface';
+import { FeatureNode } from './feature-node';
 
-export class HeightNode implements Node {
+export class HeightNode extends FeatureNode {
 
-  constructor(private _height: number) {
+  constructor(height: number) {
+    super('height', height);
   }
 
   public toJS(): string {
-    return `height === ${this._height}`;
-  }
-
-  public toSource(): string {
-    return `(height: ${this._height})`;
+    return `height === ${this.value}`;
   }
 }

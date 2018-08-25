@@ -1,16 +1,9 @@
 import { Node } from '../interface';
+import { BinaryOperatorNode } from './binary-operator-node';
 
-export class AndNode implements Node {
+export class AndNode extends BinaryOperatorNode {
 
-  constructor(private _leftExpression: Node,
-              private _rightExpression: Node) {
-  }
-
-  public toJS(): string {
-    return `(${this._leftExpression.toJS()} && ${this._rightExpression.toJS()})`;
-  }
-
-  public toSource(): string {
-    return `${this._leftExpression.toSource()} and ${this._rightExpression.toSource()}`;
+  constructor(leftExpression: Node, rightExpression: Node) {
+    super('and', '&&', leftExpression, rightExpression);
   }
 }
